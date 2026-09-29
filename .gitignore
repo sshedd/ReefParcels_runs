@@ -12,3 +12,37 @@ __pycache__/
 
 # Temp files
 *.tmp
+
+# Large environmental/model input data
+current_files/
+coast_files/
+
+# Model outputs
+outputs/
+reef_parcels/output.zarr/
+*.zarr/
+
+# Large binary scientific data
+*.cdf
+*.nc
+
+# Python generated files
+__pycache__/
+*.pyc
+
+# R generated files
+.Rhistory
+
+# Editor / repair backups and accidental files
+*.bak
+*.htmljunk
+*.messedup
+*.pre_*
+
+# Miscellaneous temporary files
+3
+
+# ReefParcels diagnostic/generated files
+reef_parcels/particle_summary.csv
+reef_parcels/*trajectory*.png
+reef_parcels/start_vs_final_locations.png
