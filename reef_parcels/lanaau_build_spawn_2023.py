@@ -58,10 +58,10 @@ def getSpawningSites(spawn_file, depth_file, maxDepth, n, typeSpawner):
   
 
 def getSpawningEvents(monthSpawner, spawnMonths, timedSpawner, timeSpawnBegin, \
-  timeSpawnEnd, peakSpawner, peakSpawnMonths, moonSpawner, spawnPhase):
+  timeSpawnEnd, peakSpawner, peakSpawnMonths, moonSpawner, spawnPhase, endIndex=851):
     
   startTimestamp = getDate(0) #model starts
-  endTimestamp = getDate(851) #model stops
+  endTimestamp = getDate(endIndex) #model stops
   
   calendar = [startTimestamp + datetime.timedelta(days=x) for x in range((endTimestamp - startTimestamp).days + 1)]
   
@@ -111,11 +111,26 @@ def getSpawningEvents(monthSpawner, spawnMonths, timedSpawner, timeSpawnBegin, \
     
   #moon, month, no peak, time of day
   #P. meandrina
+  #if moonSpawner and monthSpawner and not peakSpawner and timedSpawner:
+    #add time to spawning days
+  #  spawn_starts = [x + timeSpawnBegin for x in spawningdays]
+  #  spawn_stops = [x + timeSpawnEnd for x in spawningdays]
+   
+  #moon, month, no peak, time of day
+  #P. meandrina, P. compressa
   if moonSpawner and monthSpawner and not peakSpawner and timedSpawner:
     #add time to spawning days
     spawn_starts = [x + timeSpawnBegin for x in spawningdays]
-    spawn_stops = [x + timeSpawnEnd for x in spawningdays]
-    
+
+    if timeSpawnBegin > timeSpawnEnd:
+      #release window crosses midnight
+      spawn_stops = [
+        x + datetime.timedelta(hours=24) + timeSpawnEnd
+        for x in spawningdays
+      ]
+    else:
+      spawn_stops = [x + timeSpawnEnd for x in spawningdays]
+ 
   #no moon, no month, peak, no time of day
   #Panulirus spp.
   if not moonSpawner and not monthSpawner and peakSpawner and not timedSpawner:

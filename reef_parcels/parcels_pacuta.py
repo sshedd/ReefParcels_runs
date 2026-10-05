@@ -633,7 +633,8 @@ def main():
         peakSpawner,          # True/False: has peak season?
         _peakMonths,          # [] or list of ints for peak months
         moonSpawner,          # True/False: lunar-linked spawning
-        spawnPhase            # list of phase names, e.g. ["Waning gibbous"]
+        spawnPhase,            # list of phase names, e.g. ["Waning gibbous"]
+        endIndex=750
     )
     print(f"Spawning schedule built: starttime={starttime} sec, segments={len(events)}")
     print(f"First 10 event durations: {events[:10]}")
@@ -709,16 +710,24 @@ def main():
     #output_file = ParticleFile(name=str(out_path), outputdt=datetime.timedelta(hours=6))
     #output_file = ParticleFile(str(out_path), pset, outputdt=timedelta(hours=1))
     
-    out_path = "/home/sshedd/working/emily_parcels/outputs/repair_test.zarr"
+#    out_path = "/home/sshedd/working/emily_parcels/outputs/repair_test.zarr"
+
+#    output_file = ParticleFile(
+#        out_path,
+#        pset,
+#       outputdt=datetime.timedelta(hours=1)
+#    )
+
+    out_path = "/home/sshedd/working/emily_parcels/outputs/pacuta_brooder_production.zarr"
 
     output_file = ParticleFile(
         out_path,
         pset,
-        outputdt=datetime.timedelta(hours=1)
+        outputdt=datetime.timedelta(hours=24)
     )
 
-    print(f"Writing test trajectories to {out_path}")
-    
+    print(f"Writing P. acuta brooder trajectories to {out_path}")
+
 #    counter = 1
 #    n_events = len(events)
 #    print(f"Reached point C: n_events = {n_events}")
@@ -758,7 +767,7 @@ def main():
     # ---------------------------------------------------------
 
     counter = 1
-    release_events = events[:4]
+    release_events = events
 
     print(f"Release phase: {len(release_events)} event segments")
 
@@ -796,7 +805,7 @@ def main():
 
     pset.repeatdt = None
 
-    tracking_days = 30
+    tracking_days = 100
 
     print(
         f"Release phase complete. "

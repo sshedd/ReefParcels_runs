@@ -425,7 +425,7 @@ def Behavior(particle, fieldset, time):
             
         #swimming down
         if (particle.nowVertical == 5):
-          if d_now > maxAdultDepth:
+          if d_now > fieldset.maxAdultDepth:
             particle.depth -= d_delta
           else:  
             particle.depth += d_delta

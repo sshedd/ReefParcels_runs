@@ -719,3 +719,90 @@ At the time of this documentation:
 - a longer benchmark is the next validation step;
 - the model should still be considered a repaired/testing version rather than a
   finalized production P. acuta model.
+
+## P. acuta brooder production configuration
+
+### Final biological/model settings
+- Species: Pocillopora acuta
+- Reproductive mode: brooder (`typeSpawner = 1`)
+- Computational release density: `n_eggs = 1` particle/site/release timestep
+- Spawning: year-round
+- Daily release window: 03:00-06:00
+- Lunar restriction: none
+- Minimum PLD: 0.5 days
+- Maximum PLD: 100 days
+- Model timestep: 12 minutes
+- Production trajectory output interval: 24 hours
+- Currents: 1-km MITgcm only
+- Settlement habitat: 77 model cells containing the 193 empirical sampling sites
+
+The inherited Pocillopora larval behavior was retained. The demonstrated
+`maxAdultDepth` bug in `Behavior` was corrected to use
+`fieldset.maxAdultDepth`.
+
+### P. acuta validation run
+
+Validation used 2 days of releases followed by approximately 30 days of
+tracking.
+
+Results:
+- Trajectories: 5,983
+- Never valid: 0
+- Settled: 5,747 (96.1%)
+- Dead: 156
+- Still active after ~31-32 days: 80
+- OOB deaths: 19
+- Beached deaths: 50
+- Random mortality deaths: 87
+- Maximum-PLD deaths: 0
+
+Connectivity:
+- Source sites represented: 193 / 193
+- Destination model cells reached: 76 / 77
+- Source -> destination-cell links: 260
+- Unreached destination cell: 527_1199
+- Natal-cell settlers: 4,478
+- Different-cell settlers: 1,269
+- Natal-cell fraction: 77.9%
+
+### Production release period
+
+The 1-km current record covers 2011-04-01 through 2013-07-30.
+
+Because `maxPLD = 100` days, production releases are stopped before the
+end of the current record so that late-released larvae can continue to be
+tracked.
+
+`getSpawningEvents()` was modified to accept an optional `endIndex`,
+while retaining 851 as the default for compatibility with the inherited
+scripts.
+
+For the P. acuta production script:
+- `endIndex = 750`
+- release cutoff is approximately 2013-04-20
+- final post-release tracking period = 100 days
+
+The one-day margin avoids running directly against the final current
+timestamp.
+
+### Production benchmark
+
+A 10-spawning-day benchmark was run using the repaired production
+workflow.
+
+Benchmark:
+- 29,143 trajectories
+- 90 output observations with 6-hour output
+- Wall time: 20 min 11 sec
+- CPU utilization: 99%
+- Peak resident memory: ~1.55 GB
+- Swaps: 0
+- Exit status: 0
+- Zarr size: ~1.5 GB
+
+Based on the output volume, the production trajectory output interval
+was increased from 6 hours to 24 hours. The internal model timestep
+remains 12 minutes; only the trajectory write frequency was changed.
+
+Full production configuration is expected to release approximately
+2.17 million particles.
