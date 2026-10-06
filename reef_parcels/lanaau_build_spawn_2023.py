@@ -253,8 +253,15 @@ def getSpawningEvents(monthSpawner, spawnMonths, timedSpawner, timeSpawnBegin, \
     counter = 0
     
     #non-peak duration
-    nonPeakEnd = timeSpawnBegin + (((timeSpawnEnd + datetime.timedelta(hours = 24)) - timeSpawnBegin) / 10)
-    
+    #nonPeakEnd = timeSpawnBegin + (((timeSpawnEnd + datetime.timedelta(hours = 24)) - timeSpawnBegin) / 10)
+    # non-peak duration: 1/10 of the full spawning window
+    if timeSpawnBegin > timeSpawnEnd:
+       spawnDuration = (timeSpawnEnd + datetime.timedelta(hours=24)) - timeSpawnBegin
+    else:
+       spawnDuration = timeSpawnEnd - timeSpawnBegin
+
+    nonPeakEnd = timeSpawnBegin + (spawnDuration / 10)
+ 
     for x in spawningdays:
       #during peak, one spawning event per day
       if x in peakspawningdays:
